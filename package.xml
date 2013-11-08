@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <name>shimmer</name>
+  <version>0.0.1</version>
+  <description>Used for communicating with Shimmer Motion Development Kit</description>
+  <maintainer email="rafael.berkvens@uantwerpen.be">Rafael Berkvens</maintainer>
+  <license>GPLv3</license>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+</package>
