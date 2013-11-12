@@ -115,7 +115,7 @@ def read_mag_cal(sock):
   return struct.unpack('>hhhhhhbbbbbbbbb', data)
 
 if __name__ == '__main__':
-  rospy.init_node('write_calibration_data')
+  rospy.init_node('shimmer/write_calibration_data')
 
   bd_addr = "00:06:66:43:B7:B7"
   port = 1
@@ -129,7 +129,7 @@ if __name__ == '__main__':
    align0, align1, align2,
    align3, align4, align5,
    align6, align7, align8) = read_accel_cal(sock)
-  shimmer_calibration_data['shimmer_accel'] = dict(offset_vector=[Xoffset, Yoffset, Zoffset],
+  shimmer_calibration_data['shimmer/accel'] = dict(offset_vector=[Xoffset, Yoffset, Zoffset],
                                                    sensitivity_matrix=[Xsensitivity, Ysensitivity, Zsensitivity],
                                                    alignment_matrix=[float(x) / 100 for x in
                                                                      [align0, align1, align2,
@@ -140,7 +140,7 @@ if __name__ == '__main__':
    align0, align1, align2,
    align3, align4, align5,
    align6, align7, align8) = read_gyro_cal(sock)
-  shimmer_calibration_data['shimmer_gyro'] = dict(offset_vector=[Xoffset, Yoffset, Zoffset],
+  shimmer_calibration_data['shimmer/gyro'] = dict(offset_vector=[Xoffset, Yoffset, Zoffset],
                                                   sensitivity_matrix=[Xsensitivity, Ysensitivity, Zsensitivity],
                                                   alignment_matrix=[float(x) / 100 for x in
                                                                     [align0, align1, align2,
@@ -151,7 +151,7 @@ if __name__ == '__main__':
    align0, align1, align2,
    align3, align4, align5,
    align6, align7, align8) = read_mag_cal(sock)
-  shimmer_calibration_data['shimmer_mag'] = dict(offset_vector=[Xoffset, Yoffset, Zoffset],
+  shimmer_calibration_data['shimmer/mag'] = dict(offset_vector=[Xoffset, Yoffset, Zoffset],
                                                  sensitivity_matrix=[Xsensitivity, Ysensitivity, Zsensitivity],
                                                  alignment_matrix=[float(x) / 100 for x in
                                                                    [align0, align1, align2,

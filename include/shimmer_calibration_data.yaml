@@ -1,12 +1,12 @@
-shimmer_accel:
+shimmer/accel:
   alignment_matrix: [-0.01, -0.01, -0.01, -0.01, -0.01, -0.01, -0.01, -0.01, -0.01]
   offset_vector: [-1, -1, -1]
   sensitivity_matrix: [-1, -1, -1]
-shimmer_gyro:
+shimmer/gyro:
   alignment_matrix: [1.26, 1.26, 0.0, 1.2, -0.16, 1.26, 0.05, 1.0, 0.06]
   offset_vector: [16724, 11079, 17217]
   sensitivity_matrix: [20493, 32256, 30960]
-shimmer_mag:
+shimmer/mag:
   alignment_matrix: [-0.01, -0.01, -0.01, -0.01, -0.01, -0.01, -0.01, -0.01, -0.01]
   offset_vector: [-1, -1, -1]
   sensitivity_matrix: [-1, -1, -1]

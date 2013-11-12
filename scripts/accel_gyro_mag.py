@@ -48,8 +48,8 @@ def read_data(sock):
   return struct.unpack('HHHHHHHhhh', data[1:framesize])
 
 if __name__ == '__main__':
-  rospy.init_node('accel_gyro_mag')
-  imu_pub = rospy.Publisher('shimmer/imu', sensor_msgs.msg.Imu)
+  rospy.init_node('shimmer/accel_gyro_mag')
+  imu_pub = rospy.Publisher('shimmer/raw/imu', sensor_msgs.msg.Imu)
   imu = sensor_msgs.msg.Imu()
   imu.header.frame_id = "imu"
   imu.orientation.x = 0
@@ -63,7 +63,7 @@ if __name__ == '__main__':
   imu.linear_acceleration_covariance = [0] * 9
   imu.linear_acceleration_covariance[0] = -1  # covariance unknown
   
-  mag_pub = rospy.Publisher('shimmer/mag', sensor_msgs.msg.MagneticField)
+  mag_pub = rospy.Publisher('shimmer/raw/mag', sensor_msgs.msg.MagneticField)
   mag = sensor_msgs.msg.MagneticField()
   mag.header.frame_id = "imu"
   mag.magnetic_field_covariance = [0] * 9
