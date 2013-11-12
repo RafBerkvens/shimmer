@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#  shimmer_pub_all publishes all shimmer imu data.
+#  accel_gyro_mag publishes all shimmer imu data.
 #  Copyright (C) 2013  Rafael Berkvens rafael.berkvens@uantwerpen.be
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -30,132 +30,6 @@ def wait_for_ack():
    while ddata != ack:
       ddata = sock.recv(1)
    return
- 
-def read_accel_cal(sock):
-  # send get accel calibration command
-  sock.send(struct.pack('B', 0x13))
-  
-  # read the acknowledgement
-  wait_for_ack()
-  print "Acknowledgement received to get accel calibration command"
-  
-  # wait for calibration response 
-  ddata = ""
-  response = struct.pack('B', 0x12) 
-  while ddata != response:
-     ddata = sock.recv(1)
-  print "Accel calibration response:"
-  
-  # read incoming data   
-  ddata = ""
-  numbytes = 0
-  framesize = 21 
-  
-  while numbytes < framesize:
-     ddata += sock.recv(framesize)
-     numbytes = len(ddata)
-  
-  data = ddata[0:framesize]
-  ddata = ddata[framesize:]
-  numbytes = len(ddata)
-  
-  
-  print "Raw packet received from shimmer:",
-  print ",".join("0x{:02x}".format(ord(c)) for c in data)
-  print
-  
-  (Xoffset, Yoffset, Zoffset, Xsensitivity, Ysensitivity, Zsensitivity, align0, align1, align2, align3, align4, align5, align6, align7, align8) = struct.unpack('>hhhhhhbbbbbbbbb', data);
-  print "Offset Vector (ba) | Sensitivity Matrix (Ka) | Alignment Matrix (Ra)"
-  print "              %4d |    %4d       0       0 |" % (Xoffset, Xsensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align0)/100, float(align1)/100, float(align2)/100)
-  print "              %4d |       0    %4d       0 |" % (Yoffset, Ysensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align3)/100, float(align4)/100, float(align5)/100)
-  print "              %4d |       0       0    %4d |" % (Zoffset, Zsensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align6)/100, float(align7)/100, float(align8)/100)
- 
-def read_gyro_cal(sock):
-  # send get gyro calibration command
-  sock.send(struct.pack('B', 0x16))
-  
-  # read the acknowledgement
-  wait_for_ack()
-  print "Acknowledgement received to get gyro calibration command"
-  
-  # wait for calibration response 
-  ddata = ""
-  response = struct.pack('B', 0x15) 
-  while ddata != response:
-     ddata = sock.recv(1)
-  print "Gyro calibration response:"
-  
-  # read incoming data   
-  ddata = ""
-  numbytes = 0
-  framesize = 21 
-  
-  while numbytes < framesize:
-     ddata += sock.recv(framesize)
-     numbytes = len(ddata)
-  
-  data = ddata[0:framesize]
-  ddata = ddata[framesize:]
-  numbytes = len(ddata)
-  
-  
-  print "Raw packet received from shimmer:",
-  print ",".join("0x{:02x}".format(ord(c)) for c in data)
-  print
-  
-  (Xoffset, Yoffset, Zoffset, Xsensitivity, Ysensitivity, Zsensitivity, align0, align1, align2, align3, align4, align5, align6, align7, align8) = struct.unpack('>hhhhhhbbbbbbbbb', data);
-  print "Offset Vector (bg) | Sensitivity Matrix (Kg) | Alignment Matrix (Rg)"
-  print "              %4d |    %4d       0       0 |" % (Xoffset, Xsensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align0)/100, float(align1)/100, float(align2)/100)
-  print "              %4d |       0    %4d       0 |" % (Yoffset, Ysensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align3)/100, float(align4)/100, float(align5)/100)
-  print "              %4d |       0       0    %4d |" % (Zoffset, Zsensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align6)/100, float(align7)/100, float(align8)/100)
- 
-def read_mag_cal(sock):
-  # send get mag calibration command
-  sock.send(struct.pack('B', 0x19))
-  
-  # read the acknowledgement
-  wait_for_ack()
-  print "Acknowledgement received to get mag calibration command"
-  
-  # wait for calibration response 
-  ddata = ""
-  response = struct.pack('B', 0x18) 
-  while ddata != response:
-     ddata = sock.recv(1)
-  print "Mag calibration response:"
-  
-  # read incoming data   
-  ddata = ""
-  numbytes = 0
-  framesize = 21 
-  
-  while numbytes < framesize:
-     ddata += sock.recv(framesize)
-     numbytes = len(ddata)
-  
-  data = ddata[0:framesize]
-  ddata = ddata[framesize:]
-  numbytes = len(ddata)
-  
-  
-  print "Raw packet received from shimmer:",
-  print ",".join("0x{:02x}".format(ord(c)) for c in data)
-  print
-  
-  (Xoffset, Yoffset, Zoffset, Xsensitivity, Ysensitivity, Zsensitivity, align0, align1, align2, align3, align4, align5, align6, align7, align8) = struct.unpack('>hhhhhhbbbbbbbbb', data);
-  print "Offset Vector (bm) | Sensitivity Matrix (Km) | Alignment Matrix (Rm)"
-  print "              %4d |    %4d       0       0 |" % (Xoffset, Xsensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align0)/100, float(align1)/100, float(align2)/100)
-  print "              %4d |       0    %4d       0 |" % (Yoffset, Ysensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align3)/100, float(align4)/100, float(align5)/100)
-  print "              %4d |       0       0    %4d |" % (Zoffset, Zsensitivity),
-  print ' {: .2f}  {: .2f}  {: .2f}'.format(float(align6)/100, float(align7)/100, float(align8)/100)
 
 def read_data(sock):
   # read incoming data
@@ -174,7 +48,7 @@ def read_data(sock):
   return struct.unpack('HHHHHHHhhh', data[1:framesize])
 
 if __name__ == '__main__':
-  rospy.init_node('shimmer_pub_all')
+  rospy.init_node('accel_gyro_mag')
   imu_pub = rospy.Publisher('shimmer/imu', sensor_msgs.msg.Imu)
   imu = sensor_msgs.msg.Imu()
   imu.header.frame_id = "imu"
