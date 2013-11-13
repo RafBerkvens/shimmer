@@ -115,7 +115,7 @@ def read_mag_cal(sock):
   return struct.unpack('>hhhhhhbbbbbbbbb', data)
 
 if __name__ == '__main__':
-  rospy.init_node('shimmer/write_calibration_data')
+  rospy.init_node('write_calibration_data')
 
   bd_addr = "00:06:66:43:B7:B7"
   port = 1

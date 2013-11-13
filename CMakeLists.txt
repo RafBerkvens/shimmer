@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(shimmer)
 
-find_package(catkin REQUIRED COMPONENTS rospy sensor_msgs)
+find_package(catkin REQUIRED COMPONENTS rospy roscpp sensor_msgs geometry_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -97,9 +97,7 @@ add_executable(calibrate_data src/calibrate_data.cpp)
 # add_dependencies(shimmer_node shimmer_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(shimmer_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(calibrate_data ${catkin_LIBRARIES})
 
 #############
 ## Install ##

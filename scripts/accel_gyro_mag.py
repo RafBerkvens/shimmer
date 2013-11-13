@@ -48,8 +48,9 @@ def read_data(sock):
   return struct.unpack('HHHHHHHhhh', data[1:framesize])
 
 if __name__ == '__main__':
-  rospy.init_node('shimmer/accel_gyro_mag')
-  imu_pub = rospy.Publisher('shimmer/raw/imu', sensor_msgs.msg.Imu)
+  rospy.init_node('accel_gyro_mag')
+  imu_pub = rospy.Publisher('shimmer/raw/imu', sensor_msgs.msg.Imu,
+                            None, True)
   imu = sensor_msgs.msg.Imu()
   imu.header.frame_id = "imu"
   imu.orientation.x = 0
@@ -63,7 +64,8 @@ if __name__ == '__main__':
   imu.linear_acceleration_covariance = [0] * 9
   imu.linear_acceleration_covariance[0] = -1  # covariance unknown
   
-  mag_pub = rospy.Publisher('shimmer/raw/mag', sensor_msgs.msg.MagneticField)
+  mag_pub = rospy.Publisher('shimmer/raw/mag', sensor_msgs.msg.MagneticField,
+                            None, True)
   mag = sensor_msgs.msg.MagneticField()
   mag.header.frame_id = "imu"
   mag.magnetic_field_covariance = [0] * 9
@@ -73,10 +75,6 @@ if __name__ == '__main__':
   port = 1
   sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
   sock.connect((bd_addr, port))
-  
-  read_accel_cal(sock)
-  read_gyro_cal(sock)
-  read_mag_cal(sock)
 
   # send the set sensors command
   sock.send(struct.pack('BBB', 0x08, 0xE0, 0x00))  # all

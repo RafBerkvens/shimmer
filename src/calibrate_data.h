@@ -24,9 +24,13 @@
 #include <Eigen/Dense>
 
 #include <ros/ros.h>
+#include <ros/console.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/MagneticField.h>
+#include <geometry_msgs/Vector3.h>
+
 #include <XmlRpcValue.h>
+#include <XmlRpcException.h>
 
 class CalibrateData
 {
@@ -38,20 +42,25 @@ class CalibrateData
   Eigen::Vector3d mag_offset_vector_;
 
   ros::NodeHandle * nh_;
+  ros::Publisher imu_pub_;
+  ros::Publisher mag_pub_;
 
   void getMatrices(std::string sensor,
                    Eigen::Matrix3d & alignment_matrix,
                    Eigen::Matrix3d & sensitivity_matrix,
                    Eigen::Vector3d & offset_vector);
 
-public:
-  CalibrateData(ros::NodeHandle * nh);
-  virtual ~CalibrateData();
-
   Eigen::Vector3d calibrate(Eigen::Vector3d data,
                             Eigen::Matrix3d alignment_matrix,
                             Eigen::Matrix3d sensitivity_matrix,
                             Eigen::Vector3d offset_vector);
+
+public:
+  CalibrateData(ros::NodeHandle * nh);
+  virtual ~CalibrateData();
+
+  void callbackAccelGyro(const sensor_msgs::ImuConstPtr & msg);
+  void callbackMag(const sensor_msgs::MagneticFieldConstPtr & msg);
 };
 
 #endif /* CALIBRATE_DATA_H_ */

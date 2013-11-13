@@ -1,0 +1,8 @@
+<launch>
+
+  <rosparam command="load" file="$(find shimmer)/include/shimmer_calibration_data.yaml" />
+
+  <node pkg="shimmer" type="calibrate_data" name="calibrate_data"
+        ns="shimmer" required="true" output="screen"/>
+
+</launch>

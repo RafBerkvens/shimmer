@@ -29,41 +29,32 @@ void CalibrateData::getMatrices(std::string sensor,
       xmlrpc_alignment_matrix.getType() == XmlRpc::XmlRpcValue::TypeArray);
   for (int32_t i = 0; i < xmlrpc_alignment_matrix.size(); ++i)
   {
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(0, 0) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(0, 1) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(0, 2) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(1, 0) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(1, 1) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(1, 2) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(2, 0) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(2, 1) = static_cast<double>(xmlrpc_alignment_matrix[i]);
-    ROS_ASSERT(
-        xmlrpc_alignment_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_alignment_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeDouble);
     alignment_matrix(2, 2) = static_cast<double>(xmlrpc_alignment_matrix[i]);
   }
 
@@ -71,29 +62,26 @@ void CalibrateData::getMatrices(std::string sensor,
   nh_->getParam(sensor + "/sensitivity_matrix", xmlrpc_sensitivity_matrix);
   ROS_ASSERT(
       xmlrpc_sensitivity_matrix.getType() == XmlRpc::XmlRpcValue::TypeArray);
-  for (int32_t i = 0; i < xmlrpc_alignment_matrix.size(); ++i)
+  for (int32_t i = 0; i < xmlrpc_sensitivity_matrix.size(); ++i)
   {
-    ROS_ASSERT(
-        xmlrpc_sensitivity_matrix[i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_sensitivity_matrix[i].getType()
+        == XmlRpc::XmlRpcValue::TypeInt);
     sensitivity_matrix(0, 0) =
-        static_cast<double>(xmlrpc_sensitivity_matrix[i]);
+        double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
     sensitivity_matrix(0, 1) = 0.0;
     sensitivity_matrix(0, 2) = 0.0;
     sensitivity_matrix(1, 0) = 0.0;
-    ROS_ASSERT(
-        xmlrpc_sensitivity_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeInt);
     sensitivity_matrix(1, 1) =
-        static_cast<double>(xmlrpc_sensitivity_matrix[i]);
+        double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
     sensitivity_matrix(1, 2) = 0.0;
     sensitivity_matrix(2, 0) = 0.0;
     sensitivity_matrix(2, 1) = 0.0;
-    ROS_ASSERT(
-        xmlrpc_sensitivity_matrix[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
+    ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
+        == XmlRpc::XmlRpcValue::TypeInt);
     sensitivity_matrix(2, 2) =
-        static_cast<double>(xmlrpc_sensitivity_matrix[i]);
+        double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
   }
 
   XmlRpc::XmlRpcValue xmlrpc_offset_vector;
@@ -102,39 +90,15 @@ void CalibrateData::getMatrices(std::string sensor,
   for (int32_t i = 0; i < xmlrpc_offset_vector.size(); ++i)
   {
     ROS_ASSERT(
-        xmlrpc_offset_vector[i].getType() == XmlRpc::XmlRpcValue::TypeDouble);
-    offset_vector(0) = static_cast<double>(xmlrpc_offset_vector[i]);
+        xmlrpc_offset_vector[i].getType() == XmlRpc::XmlRpcValue::TypeInt);
+    offset_vector(0) = double(static_cast<int>(xmlrpc_offset_vector[i]));
     ROS_ASSERT(
-        xmlrpc_offset_vector[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
-    offset_vector(1) = static_cast<double>(xmlrpc_offset_vector[i]);
+        xmlrpc_offset_vector[++i].getType() == XmlRpc::XmlRpcValue::TypeInt);
+    offset_vector(1) = double(static_cast<int>(xmlrpc_offset_vector[i]));
     ROS_ASSERT(
-        xmlrpc_offset_vector[++i].getType()
-            == XmlRpc::XmlRpcValue::TypeDouble);
-    offset_vector(2) = static_cast<double>(xmlrpc_offset_vector[i]);
+        xmlrpc_offset_vector[++i].getType() == XmlRpc::XmlRpcValue::TypeInt);
+    offset_vector(2) = double(static_cast<int>(xmlrpc_offset_vector[i]));
   }
-}
-
-CalibrateData::CalibrateData(ros::NodeHandle * nh)
-{
-  nh_ = nh;
-  this->getMatrices("accel",
-                    accel_alignment_matrix_,
-                    accel_sensitivity_matrix_,
-                    accel_offset_vector_);
-  this->getMatrices("gyro",
-                    gyro_alignment_matrix_,
-                    gyro_sensitivity_matrix_,
-                    gyro_offset_vector_);
-  this->getMatrices("mag",
-                    mag_alignment_matrix_,
-                    mag_sensitivity_matrix_,
-                    mag_offset_vector_);
-}
-
-CalibrateData::~CalibrateData()
-{
-  delete nh_;
 }
 
 Eigen::Vector3d CalibrateData::calibrate(Eigen::Vector3d data,
@@ -149,7 +113,108 @@ Eigen::Vector3d CalibrateData::calibrate(Eigen::Vector3d data,
   return calibrated_data;
 }
 
+CalibrateData::CalibrateData(ros::NodeHandle * nh)
+{
+  nh_ = nh;
+  try
+  {
+    this->getMatrices("/shimmer/accel",
+                      accel_alignment_matrix_,
+                      accel_sensitivity_matrix_,
+                      accel_offset_vector_);
+    this->getMatrices("/shimmer/gyro",
+                      gyro_alignment_matrix_,
+                      gyro_sensitivity_matrix_,
+                      gyro_offset_vector_);
+    this->getMatrices("/shimmer/mag",
+                      mag_alignment_matrix_,
+                      mag_sensitivity_matrix_,
+                      mag_offset_vector_);
+  }
+  catch (XmlRpc::XmlRpcException &e)
+  {
+    ROS_FATAL_STREAM("XmlRpc error when extracting parameters: " <<
+                     e.getMessage() << ". Code: " << e.getCode());
+    ros::shutdown();
+  }
+
+  imu_pub_ = nh_->advertise<sensor_msgs::Imu>("/shimmer/imu", 1);
+  mag_pub_ = nh_->advertise<sensor_msgs::MagneticField>("/shimmer/mag", 1);
+}
+
+CalibrateData::~CalibrateData()
+{
+  //delete nh_;
+}
+
+void CalibrateData::callbackAccelGyro(const sensor_msgs::ImuConstPtr & msg)
+{
+  Eigen::Vector3d accel_raw;
+  Eigen::Vector3d accel_cal;
+  Eigen::Vector3d gyro_raw;
+  Eigen::Vector3d gyro_cal;
+
+  accel_raw(0) = msg->linear_acceleration.x;
+  accel_raw(1) = msg->linear_acceleration.y;
+  accel_raw(2) = msg->linear_acceleration.z;
+  gyro_raw(0) = msg->angular_velocity.x;
+  gyro_raw(1) = msg->angular_velocity.y;
+  gyro_raw(2) = msg->angular_velocity.z;
+
+  accel_cal = calibrate(accel_raw,
+                        accel_alignment_matrix_,
+                        accel_sensitivity_matrix_,
+                        accel_offset_vector_);
+  gyro_cal = calibrate(gyro_raw,
+                       gyro_alignment_matrix_,
+                       gyro_sensitivity_matrix_,
+                       gyro_offset_vector_);
+
+  sensor_msgs::Imu imu_msg = *msg;
+  imu_msg.linear_acceleration.x = accel_cal(0);
+  imu_msg.linear_acceleration.y = accel_cal(1);
+  imu_msg.linear_acceleration.z = accel_cal(2);
+  imu_msg.angular_velocity.x = gyro_cal(0);
+  imu_msg.angular_velocity.y = gyro_cal(1);
+  imu_msg.angular_velocity.z = gyro_cal(2);
+
+  imu_pub_.publish(imu_msg);
+}
+
+void CalibrateData::callbackMag(const sensor_msgs::MagneticFieldConstPtr & msg)
+{
+  Eigen::Vector3d mag_raw;
+  Eigen::Vector3d mag_cal;
+
+  mag_raw(0) = msg->magnetic_field.x;
+  mag_raw(1) = msg->magnetic_field.y;
+  mag_raw(2) = msg->magnetic_field.z;
+
+  mag_cal = calibrate(mag_raw,
+                      mag_alignment_matrix_,
+                      mag_sensitivity_matrix_,
+                      mag_offset_vector_);
+
+  sensor_msgs::MagneticField mag_msg = *msg;
+  mag_msg.magnetic_field.x = mag_cal(0);
+  mag_msg.magnetic_field.y = mag_cal(1);
+  mag_msg.magnetic_field.z = mag_cal(2);
+
+  mag_pub_.publish(mag_msg);
+}
+
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "shimmer/calibrate_data")
+  ros::init(argc, argv, "calibrate_data");
+  ros::NodeHandle nh;
+
+  CalibrateData calibrateData(&nh);
+  ros::Subscriber imu_sub = nh.subscribe("/shimmer/raw/imu", 1,
+                                         &CalibrateData::callbackAccelGyro,
+                                         &calibrateData);
+  ros::Subscriber mag_sub = nh.subscribe("/shimmer/raw/mag", 1,
+                                         &CalibrateData::callbackMag,
+                                         &calibrateData);
+
+  ros::spin();
 }
