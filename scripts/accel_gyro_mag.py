@@ -102,7 +102,7 @@ if __name__ == '__main__':
     mag.header.stamp = time
     mag_pub.publish(mag)
     # Heading expressed in degrees.
-    heading.heading = atan2(float(mag.magnetic_field.y),float(mag.magnetic_field.x))*180/pi
+    heading.heading = atan2(float(mag.magnetic_field.y),float(mag.magnetic_field.x))#*180/pi
     heading.header.stamp = time
     heading_pub.publish(heading)
     rospy.logdebug("published!")
