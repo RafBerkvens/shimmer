@@ -1,12 +1,12 @@
 shimmer/accel:
-  alignment_matrix: [1.0, 0.01, 0.02, 0.0, 1.0, 0.0, -0.01, 0.02, -1.0]
-  offset_vector: [1936, 2232, 1747]
-  sensitivity_matrix: [101, 102, 99]
+  alignment_matrix: [-1.0, -0.03, 0.01, 0.01, -1.0, 0.01, -0.01, -0.01, 1.0]
+  offset_vector: [1954, 2100, 1664]
+  sensitivity_matrix: [95, 102, 100]
 shimmer/gyro:
-  alignment_matrix: [-0.01, -1.0, -0.01, 1.0, 0.03, 0.02, 0.03, 0.0, 1.0]
-  offset_vector: [1838, 1718, 1858]
-  sensitivity_matrix: [402, 282, 410]
+  alignment_matrix: [-0.05, -1.0, -0.07, 1.0, 0.04, -0.09, -0.16, -0.26, -0.95]
+  offset_vector: [1841, 1713, 1857]
+  sensitivity_matrix: [2.63, 1.61, 1.77]
 shimmer/mag:
-  alignment_matrix: [-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0]
-  offset_vector: [-38, -11, 178]
-  sensitivity_matrix: [571, 567, 542]
+  alignment_matrix: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
+  offset_vector: [137, -63, -86]
+  sensitivity_matrix: [565, 562, 537]

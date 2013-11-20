@@ -117,7 +117,8 @@ def read_mag_cal(sock):
 if __name__ == '__main__':
   rospy.init_node('write_calibration_data')
 
-  bd_addr = "00:06:66:43:B7:B7"
+  #bd_addr = "00:06:66:43:B7:B7"
+  bd_addr = "00:06:66:43:A9:0E"
   port = 1
   sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
   sock.connect((bd_addr, port))
@@ -141,7 +142,8 @@ if __name__ == '__main__':
    align3, align4, align5,
    align6, align7, align8) = read_gyro_cal(sock)
   shimmer_calibration_data['shimmer/gyro'] = dict(offset_vector=[Xoffset, Yoffset, Zoffset],
-                                                  sensitivity_matrix=[Xsensitivity, Ysensitivity, Zsensitivity],
+                                                  sensitivity_matrix=[float(x) / 100 for x in
+                                                                      Xsensitivity, Ysensitivity, Zsensitivity],
                                                   alignment_matrix=[float(x) / 100 for x in
                                                                     [align0, align1, align2,
                                                                      align3, align4, align5,

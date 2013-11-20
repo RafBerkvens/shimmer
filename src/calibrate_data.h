@@ -20,6 +20,7 @@
 #define CALIBRATE_DATA_H_
 
 #include <string>
+#include <math.h>
 
 #include <Eigen/Dense>
 

@@ -23,8 +23,9 @@ import bluetooth
 import rospy
 import sensor_msgs.msg
 import geometry_msgs.msg
+from shimmer.msg import Heading
 
-def wait_for_ack():
+def wait_for_ack(sock):
    ddata = ""
    ack = struct.pack('B', 0xff)
    while ddata != ack:
@@ -40,17 +41,16 @@ def read_data(sock):
     ddata += sock.recv(framesize)
     numbytes = len(ddata)
 
-    data = ddata[0:framesize]
-    ddata = ddata[framesize:]
-    # numbytes = len(ddata)
+  data = ddata[0:framesize]
+  ddata = ddata[framesize:]
+  numbytes = len(ddata)
 
   packettype = struct.unpack('B', data[0:1])
   return struct.unpack('HHHHHHHhhh', data[1:framesize])
 
 if __name__ == '__main__':
   rospy.init_node('accel_gyro_mag')
-  imu_pub = rospy.Publisher('shimmer/raw/imu', sensor_msgs.msg.Imu,
-                            None, True)
+  imu_pub = rospy.Publisher('raw/imu', sensor_msgs.msg.Imu)
   imu = sensor_msgs.msg.Imu()
   imu.header.frame_id = "imu"
   imu.orientation.x = 0
@@ -64,27 +64,32 @@ if __name__ == '__main__':
   imu.linear_acceleration_covariance = [0] * 9
   imu.linear_acceleration_covariance[0] = -1  # covariance unknown
   
-  mag_pub = rospy.Publisher('shimmer/raw/mag', sensor_msgs.msg.MagneticField,
-                            None, True)
+  mag_pub = rospy.Publisher('raw/mag', sensor_msgs.msg.MagneticField)
   mag = sensor_msgs.msg.MagneticField()
   mag.header.frame_id = "imu"
   mag.magnetic_field_covariance = [0] * 9
   mag.magnetic_field_covariance[0] = -1  # covariance unknown
+  
+  heading_pub = rospy.Publisher('heading', Heading)
+  heading = Heading()
+  heading.header.frame_id = "imu"
 
-  bd_addr = "00:06:66:43:B7:B7"
+  #bd_addr = "00:06:66:43:B7:B7"
+  bd_addr = "00:06:66:43:A9:0E"
   port = 1
   sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
   sock.connect((bd_addr, port))
 
   # send the set sensors command
   sock.send(struct.pack('BBB', 0x08, 0xE0, 0x00))  # all
-  wait_for_ack()
+  wait_for_ack(sock)
   # send the set sampling rate command
   sock.send(struct.pack('BB', 0x05, 0x14))  # 51.2Hz
-  wait_for_ack()
+  # sock.send(struct.pack('BB', 0x05, 0x64))  # 10.24Hz
+  wait_for_ack(sock)
   # send start streaming command
   sock.send(struct.pack('B', 0x07))
-  wait_for_ack()
+  wait_for_ack(sock)
 
   while not rospy.is_shutdown():
     (timestamp,
@@ -96,15 +101,18 @@ if __name__ == '__main__':
     imu_pub.publish(imu)
     mag.header.stamp = time
     mag_pub.publish(mag)
+    # Heading expressed in degrees.
+    heading.heading = atan2(float(mag.magnetic_field.y),float(mag.magnetic_field.x))*180/pi
+    heading.header.stamp = time
+    heading_pub.publish(heading)
     rospy.logdebug("published!")
-    rospy.sleep(0.02)
+    rospy.sleep(0.01)
     
-    #print atan2(float(mag.magnetic_field.y),float(mag.magnetic_field.x))*180/pi
     #http://www.loveelectronics.co.uk/Tutorials/13/tilt-compensated-compass-arduino-tutorial
 
   # send stop streaming command
   sock.send(struct.pack('B', 0x20));
-  wait_for_ack()
+  wait_for_ack(sock)
   # close the socket
   sock.close()
   print "\n"

@@ -64,28 +64,52 @@ void CalibrateData::getMatrices(std::string sensor,
       xmlrpc_sensitivity_matrix.getType() == XmlRpc::XmlRpcValue::TypeArray);
   for (int32_t i = 0; i < xmlrpc_sensitivity_matrix.size(); ++i)
   {
-    ROS_ASSERT(xmlrpc_sensitivity_matrix[i].getType()
-        == XmlRpc::XmlRpcValue::TypeInt);
-    sensitivity_matrix(0, 0) =
-        double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
-    sensitivity_matrix(0, 1) = 0.0;
-    sensitivity_matrix(0, 2) = 0.0;
-    sensitivity_matrix(1, 0) = 0.0;
-    ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
-        == XmlRpc::XmlRpcValue::TypeInt);
-    sensitivity_matrix(1, 1) =
-        double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
-    sensitivity_matrix(1, 2) = 0.0;
-    sensitivity_matrix(2, 0) = 0.0;
-    sensitivity_matrix(2, 1) = 0.0;
-    ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
-        == XmlRpc::XmlRpcValue::TypeInt);
-    sensitivity_matrix(2, 2) =
-        double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
+    if (xmlrpc_sensitivity_matrix[i].getType() == XmlRpc::XmlRpcValue::TypeInt)
+    {
+      ROS_ASSERT(xmlrpc_sensitivity_matrix[i].getType()
+          == XmlRpc::XmlRpcValue::TypeInt);
+      sensitivity_matrix(0, 0) =
+          double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
+      sensitivity_matrix(0, 1) = 0.0;
+      sensitivity_matrix(0, 2) = 0.0;
+      sensitivity_matrix(1, 0) = 0.0;
+      ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
+          == XmlRpc::XmlRpcValue::TypeInt);
+      sensitivity_matrix(1, 1) =
+          double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
+      sensitivity_matrix(1, 2) = 0.0;
+      sensitivity_matrix(2, 0) = 0.0;
+      sensitivity_matrix(2, 1) = 0.0;
+      ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
+          == XmlRpc::XmlRpcValue::TypeInt);
+      sensitivity_matrix(2, 2) =
+          double(static_cast<int>(xmlrpc_sensitivity_matrix[i]));
+    }
+    else
+    {
+      ROS_ASSERT(xmlrpc_sensitivity_matrix[i].getType()
+          == XmlRpc::XmlRpcValue::TypeDouble);
+      sensitivity_matrix(0, 0) =
+          static_cast<double>(xmlrpc_sensitivity_matrix[i]);
+      sensitivity_matrix(0, 1) = 0.0;
+      sensitivity_matrix(0, 2) = 0.0;
+      sensitivity_matrix(1, 0) = 0.0;
+      ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
+          == XmlRpc::XmlRpcValue::TypeDouble);
+      sensitivity_matrix(1, 1) =
+          static_cast<double>(xmlrpc_sensitivity_matrix[i]);
+      sensitivity_matrix(1, 2) = 0.0;
+      sensitivity_matrix(2, 0) = 0.0;
+      sensitivity_matrix(2, 1) = 0.0;
+      ROS_ASSERT(xmlrpc_sensitivity_matrix[++i].getType()
+          == XmlRpc::XmlRpcValue::TypeDouble);
+      sensitivity_matrix(2, 2) =
+          static_cast<double>(xmlrpc_sensitivity_matrix[i]);
+    }
   }
 
   XmlRpc::XmlRpcValue xmlrpc_offset_vector;
-  nh_->getParam(sensor + "/sensitivity_matrix", xmlrpc_offset_vector);
+  nh_->getParam(sensor + "/offset_vector", xmlrpc_offset_vector);
   ROS_ASSERT(xmlrpc_offset_vector.getType() == XmlRpc::XmlRpcValue::TypeArray);
   for (int32_t i = 0; i < xmlrpc_offset_vector.size(); ++i)
   {
@@ -174,9 +198,9 @@ void CalibrateData::callbackAccelGyro(const sensor_msgs::ImuConstPtr & msg)
   imu_msg.linear_acceleration.x = accel_cal(0);
   imu_msg.linear_acceleration.y = accel_cal(1);
   imu_msg.linear_acceleration.z = accel_cal(2);
-  imu_msg.angular_velocity.x = gyro_cal(0);
-  imu_msg.angular_velocity.y = gyro_cal(1);
-  imu_msg.angular_velocity.z = gyro_cal(2);
+  imu_msg.angular_velocity.x = gyro_cal(0) * M_PI / 180.0;
+  imu_msg.angular_velocity.y = gyro_cal(1) * M_PI / 180.0;
+  imu_msg.angular_velocity.z = gyro_cal(2) * M_PI / 180.0;
 
   imu_pub_.publish(imu_msg);
 }
