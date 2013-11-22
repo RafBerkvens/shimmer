@@ -162,9 +162,9 @@ CalibrateData::CalibrateData(ros::NodeHandle * nh)
     ros::shutdown();
   }
 
-  imu_pub_ = nh_->advertise<sensor_msgs::Imu>("/shimmer/imu", 1);
-  mag_pub_ = nh_->advertise<sensor_msgs::MagneticField>("/shimmer/mag", 1);
-  heading_pub_ = nh_->advertise<geometry_msgs::PoseStamped>("/shimmer/heading",
+  imu_pub_ = nh_->advertise<sensor_msgs::Imu>("shimmer/imu", 1);
+  mag_pub_ = nh_->advertise<sensor_msgs::MagneticField>("shimmer/mag", 1);
+  heading_pub_ = nh_->advertise<geometry_msgs::PoseStamped>("shimmer/heading",
                                                             1);
 }
 
