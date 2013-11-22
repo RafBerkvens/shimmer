@@ -142,15 +142,15 @@ CalibrateData::CalibrateData(ros::NodeHandle * nh)
   nh_ = nh;
   try
   {
-    this->getMatrices("/shimmer/accel",
+    this->getMatrices("accel",
                       accel_alignment_matrix_,
                       accel_sensitivity_matrix_,
                       accel_offset_vector_);
-    this->getMatrices("/shimmer/gyro",
+    this->getMatrices("gyro",
                       gyro_alignment_matrix_,
                       gyro_sensitivity_matrix_,
                       gyro_offset_vector_);
-    this->getMatrices("/shimmer/mag",
+    this->getMatrices("mag",
                       mag_alignment_matrix_,
                       mag_sensitivity_matrix_,
                       mag_offset_vector_);
@@ -162,9 +162,9 @@ CalibrateData::CalibrateData(ros::NodeHandle * nh)
     ros::shutdown();
   }
 
-  imu_pub_ = nh_->advertise<sensor_msgs::Imu>("shimmer/imu", 1);
-  mag_pub_ = nh_->advertise<sensor_msgs::MagneticField>("shimmer/mag", 1);
-  heading_pub_ = nh_->advertise<geometry_msgs::PoseStamped>("shimmer/heading",
+  imu_pub_ = nh_->advertise<sensor_msgs::Imu>("imu", 1);
+  mag_pub_ = nh_->advertise<sensor_msgs::MagneticField>("mag", 1);
+  heading_pub_ = nh_->advertise<geometry_msgs::PoseStamped>("heading",
                                                             1);
 }
 
@@ -246,10 +246,10 @@ int main(int argc, char **argv)
   ros::NodeHandle nh;
 
   CalibrateData calibrateData(&nh);
-  ros::Subscriber imu_sub = nh.subscribe("shimmer/raw/imu", 1,
+  ros::Subscriber imu_sub = nh.subscribe("raw/imu", 1,
                                          &CalibrateData::callbackAccelGyro,
                                          &calibrateData);
-  ros::Subscriber mag_sub = nh.subscribe("shimmer/raw/mag", 1,
+  ros::Subscriber mag_sub = nh.subscribe("raw/mag", 1,
                                          &CalibrateData::callbackMag,
                                          &calibrateData);
 

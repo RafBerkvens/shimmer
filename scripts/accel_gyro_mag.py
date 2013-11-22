@@ -69,7 +69,7 @@ def heading_tilt_compensation(mag_x, mag_y, mag_z, accel_x, accel_y):
 
 if __name__ == '__main__':
   rospy.init_node('accel_gyro_mag')
-  imu_pub = rospy.Publisher('shimmer/raw/imu', sensor_msgs.msg.Imu)
+  imu_pub = rospy.Publisher('raw/imu', sensor_msgs.msg.Imu)
   imu = sensor_msgs.msg.Imu()
   imu.header.frame_id = "imu"
   imu.orientation.x = 0.0
@@ -83,13 +83,13 @@ if __name__ == '__main__':
   imu.linear_acceleration_covariance = [0.0] * 9
   imu.linear_acceleration_covariance[0] = -1.0  # covariance unknown
   
-  mag_pub = rospy.Publisher('shimmer/raw/mag', sensor_msgs.msg.MagneticField)
+  mag_pub = rospy.Publisher('raw/mag', sensor_msgs.msg.MagneticField)
   mag = sensor_msgs.msg.MagneticField()
   mag.header.frame_id = "imu"
   mag.magnetic_field_covariance = [0.0] * 9
   mag.magnetic_field_covariance[0] = -1.0  # covariance unknown
   
-  heading_pub = rospy.Publisher('shimmer/raw/heading', geometry_msgs.msg.PoseStamped)
+  heading_pub = rospy.Publisher('raw/heading', geometry_msgs.msg.PoseStamped)
   heading = geometry_msgs.msg.PoseStamped()
   heading.header.frame_id = "imu"
   heading.pose.position.x = 0.0
