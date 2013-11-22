@@ -29,6 +29,8 @@
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/MagneticField.h>
 #include <geometry_msgs/Vector3.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <tf/tf.h>
 
 #include <XmlRpcValue.h>
 #include <XmlRpcException.h>
@@ -45,6 +47,7 @@ class CalibrateData
   ros::NodeHandle * nh_;
   ros::Publisher imu_pub_;
   ros::Publisher mag_pub_;
+  ros::Publisher heading_pub_;
 
   void getMatrices(std::string sensor,
                    Eigen::Matrix3d & alignment_matrix,

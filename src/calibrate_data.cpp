@@ -164,6 +164,8 @@ CalibrateData::CalibrateData(ros::NodeHandle * nh)
 
   imu_pub_ = nh_->advertise<sensor_msgs::Imu>("/shimmer/imu", 1);
   mag_pub_ = nh_->advertise<sensor_msgs::MagneticField>("/shimmer/mag", 1);
+  heading_pub_ = nh_->advertise<geometry_msgs::PoseStamped>("/shimmer/heading",
+                                                            1);
 }
 
 CalibrateData::~CalibrateData()
@@ -219,12 +221,23 @@ void CalibrateData::callbackMag(const sensor_msgs::MagneticFieldConstPtr & msg)
                       mag_sensitivity_matrix_,
                       mag_offset_vector_);
 
+  double heading = -1.0 * atan2(double(mag_cal(1)), double(mag_cal(0)));
+  geometry_msgs::Quaternion orientation = tf::createQuaternionMsgFromYaw(heading);
+
   sensor_msgs::MagneticField mag_msg = *msg;
   mag_msg.magnetic_field.x = mag_cal(0);
   mag_msg.magnetic_field.y = mag_cal(1);
   mag_msg.magnetic_field.z = mag_cal(2);
 
+  geometry_msgs::PoseStamped heading_msg;
+  heading_msg.header = msg->header;
+  heading_msg.pose.position.x = 0.0;
+  heading_msg.pose.position.y = 0.0;
+  heading_msg.pose.position.z = 0.0;
+  heading_msg.pose.orientation = orientation;
+
   mag_pub_.publish(mag_msg);
+  heading_pub_.publish(heading_msg);
 }
 
 int main(int argc, char **argv)
