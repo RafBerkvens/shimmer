@@ -246,10 +246,10 @@ int main(int argc, char **argv)
   ros::NodeHandle nh;
 
   CalibrateData calibrateData(&nh);
-  ros::Subscriber imu_sub = nh.subscribe("/shimmer/raw/imu", 1,
+  ros::Subscriber imu_sub = nh.subscribe("shimmer/raw/imu", 1,
                                          &CalibrateData::callbackAccelGyro,
                                          &calibrateData);
-  ros::Subscriber mag_sub = nh.subscribe("/shimmer/raw/mag", 1,
+  ros::Subscriber mag_sub = nh.subscribe("shimmer/raw/mag", 1,
                                          &CalibrateData::callbackMag,
                                          &calibrateData);
 
