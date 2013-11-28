@@ -20,6 +20,7 @@ from math import pi, atan2, sqrt
 
 import sys, struct, array
 import bluetooth
+import select
 import rospy
 import tf
 import sensor_msgs.msg
@@ -32,6 +33,7 @@ def wait_for_ack(sock):
    ack = struct.pack('B', 0xff)
    while ddata != ack:
       ddata = sock.recv(1)
+      print "received [%s]" % struct.unpack('B', ddata)
    return
 
 def read_data(sock):
@@ -114,10 +116,19 @@ if __name__ == '__main__':
   wait_for_ack(sock)
 
   while not rospy.is_shutdown():
-    (timestamp,
-     imu.linear_acceleration.x, imu.linear_acceleration.y, imu.linear_acceleration.z,
-     imu.angular_velocity.x, imu.angular_velocity.y, imu.angular_velocity.z,
-     mag.magnetic_field.x, mag.magnetic_field.y, mag.magnetic_field.z) = read_data(sock)
+    try:
+      (timestamp,
+       imu.linear_acceleration.x, 
+       imu.linear_acceleration.y, 
+       imu.linear_acceleration.z,
+       imu.angular_velocity.x, 
+       imu.angular_velocity.y, 
+       imu.angular_velocity.z,
+       mag.magnetic_field.x, 
+       mag.magnetic_field.y, 
+       mag.magnetic_field.z) = read_data(sock)
+    except bluetooth.btcommon.BluetoothError as e:
+      rospy.logerr("BluetoothError during read_data: {0}".format(e.strerror))
     time = rospy.Time.now()
     imu.header.stamp = time
     imu_pub.publish(imu)
