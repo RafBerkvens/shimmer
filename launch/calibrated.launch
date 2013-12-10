@@ -3,7 +3,8 @@
   <node pkg="shimmer" type="accel_gyro_mag.py" name="accel_gyro_mag"
         ns="shimmer" required="true" output="screen" />
 
-  <rosparam command="load" file="$(find shimmer)/include/shimmer_calibration_data.yaml" />
+  <rosparam command="load" file="$(find shimmer)/include/shimmer_calibration_data.yaml" 
+            ns="shimmer" />
 
   <node pkg="shimmer" type="calibrate_data" name="calibrate_data"
         ns="shimmer" required="true" output="screen" />

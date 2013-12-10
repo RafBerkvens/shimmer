@@ -49,6 +49,30 @@ class CalibrateData
   ros::Publisher mag_pub_;
   ros::Publisher heading_pub_;
 
+  /**
+   * Values needed to compute the Exponential Moving Average (EMA) of the
+   * heading. For more information see Wikipedia:
+   * http://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
+   *
+   * TODO: add ROS parameters to edit values.
+   */
+  double ema_alpha_;
+  double ema_heading_;
+
+  /** Helper method to get matrices out of structured yaml files.
+   * Getting lists out of yaml parameter files is non-trivial and involves
+   * the XmlRpc::XmlRpcValue class. For more information, see:
+   * http://wiki.ros.org/roscpp/Overview/Parameter%20Server
+   *
+   * @param sensor: indicate the accelerometer, gyroscope or compass sensor by
+   * respectively "accel", "gyro", or "mag".
+   * @param alignment_matrix: used to store the alignment matrix in; content
+   * will be overwritten.
+   * @param sensitivity_matrix: used to store the sensitivity matrix in; content
+   * will be overwritten.
+   * @param offset_vector: used to store the offset vector in; content will be
+   * overwritten.
+   */
   void getMatrices(std::string sensor,
                    Eigen::Matrix3d & alignment_matrix,
                    Eigen::Matrix3d & sensitivity_matrix,

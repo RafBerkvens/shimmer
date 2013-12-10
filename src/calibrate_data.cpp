@@ -166,6 +166,9 @@ CalibrateData::CalibrateData(ros::NodeHandle * nh)
   mag_pub_ = nh_->advertise<sensor_msgs::MagneticField>("mag", 1);
   heading_pub_ = nh_->advertise<geometry_msgs::PoseStamped>("heading",
                                                             1);
+
+  ema_alpha_ = 0.5;     // TODO: get number from parameters.
+  ema_heading_ = 0.0;   // TODO: get number from parameters.
 }
 
 CalibrateData::~CalibrateData()
@@ -222,7 +225,9 @@ void CalibrateData::callbackMag(const sensor_msgs::MagneticFieldConstPtr & msg)
                       mag_offset_vector_);
 
   double heading = -1.0 * atan2(double(mag_cal(1)), double(mag_cal(0)));
-  geometry_msgs::Quaternion orientation = tf::createQuaternionMsgFromYaw(heading);
+  ema_heading_ = ema_alpha_ * heading + (1.0 - ema_alpha_) * ema_heading_;
+  geometry_msgs::Quaternion orientation =
+      tf::createQuaternionMsgFromYaw(ema_heading_);
 
   sensor_msgs::MagneticField mag_msg = *msg;
   mag_msg.magnetic_field.x = mag_cal(0);
