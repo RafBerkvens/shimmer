@@ -11,7 +11,7 @@ def callback(data):
             data.pose.orientation.w)
     euler = tf.transformations.euler_from_quaternion(quat)
     yaw = euler[2]
-    print yaw
+    print str(data.header.stamp.to_sec()) + ', ' + str(yaw)
 
 
 def listener():
