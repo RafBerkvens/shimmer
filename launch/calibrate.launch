@@ -1,0 +1,11 @@
+<launch>
+
+  <arg name="ns" default="shimmer" />
+
+  <group ns="$(arg ns)">
+  <rosparam command="load" file="$(find shimmer)/include/shimmer_calibration_data.yaml" />
+
+  <node pkg="shimmer" type="calibrate_data" name="calibrate_data" />
+  </group>
+
+</launch>
