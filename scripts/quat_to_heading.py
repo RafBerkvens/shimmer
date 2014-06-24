@@ -16,7 +16,7 @@ def callback(data):
 
 def listener():
     rospy.init_node('quat_to_heading')
-    rospy.Subscriber("/shimmer/heading", geometry_msgs.msg.PoseStamped, callback)
+    rospy.Subscriber("heading", geometry_msgs.msg.PoseStamped, callback)
     rospy.spin()
 
 
